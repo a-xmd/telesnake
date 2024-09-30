@@ -1,0 +1,21 @@
+.grid {
+  --font-size: 1em;
+
+  /* outline: 1px solid white; */
+  font-family: AndroidVeraMono;
+  display: grid;
+  grid-template-columns: repeat(40, 1ch);
+  grid-template-rows: repeat(24, var(--font-size));
+
+  font-size: var(--font-size);
+
+  margin: 4em auto;
+  width: fit-content;
+
+  color: white;
+
+  > * {
+    outline: 1px solid hotpink;
+    outline-color: transparent;
+  }
+}

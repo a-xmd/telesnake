@@ -1,0 +1,28 @@
+@font-face {
+  font-family: 'AndroidVeraMono';
+  src: url('/public/fonts/AndroidVeraMono.woff') format('woff');
+}
+
+body {
+  background-color: black;
+}
+
+pre {
+  outline: 1px solid blue;
+  font-family: AndroidVeraMono;
+  word-wrap: break-word;
+
+  color: white;
+}
+
+.bg-black {
+  background-color: #000;
+}
+
+.white {
+  color: #fff;
+}
+
+.blue {
+  color: #00f;
+}
