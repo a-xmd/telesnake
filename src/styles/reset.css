@@ -26,20 +26,6 @@ body {
   margin: 0;
 }
 
-code,
-kbd,
-samp,
-pre {
-  font-family:
-    Menlo,
-    Consolas,
-    Monaco,
-    Liberation Mono,
-    Lucida Console,
-    monospace;
-  font-size: 1em;
-}
-
 button,
 input,
 optgroup,

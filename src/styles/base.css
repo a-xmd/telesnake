@@ -1,28 +1,35 @@
+:root {
+  --black: #000;
+  --blue: #00f;
+  --cyan: #0ff;
+  --green: #0f0;
+  --red: #f00;
+  --white: #fff;
+  --yellow: #ff0;
+}
+
 @font-face {
   font-family: 'AndroidVeraMono';
   src: url('/public/fonts/AndroidVeraMono.woff') format('woff');
 }
 
-body {
-  background-color: black;
+* {
+  font-family: AndroidVeraMono, monospace;
 }
 
-pre {
-  outline: 1px solid blue;
-  font-family: AndroidVeraMono;
-  word-wrap: break-word;
-
+body {
+  background-color: black;
   color: white;
 }
 
 .bg-black {
-  background-color: #000;
+  background-color: var(--black);
 }
 
 .white {
-  color: #fff;
+  color: var(--white);
 }
 
 .blue {
-  color: #00f;
+  color: var(--blue);
 }
