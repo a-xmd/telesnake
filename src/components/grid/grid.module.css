@@ -1,5 +1,5 @@
 .grid {
-  --font-size: 1.5rem;
+  --font-size: 0.75rem;
 
   font-family: AndroidVeraMono, monospace;
   display: grid;
@@ -8,12 +8,41 @@
 
   font-size: var(--font-size);
 
-  margin: 4em auto;
+  white-space: pre;
+
+  @media screen and (min-width: 400px) {
+    --font-size: 1rem;
+  }
+
+  @media screen and (min-width: 492px) {
+    --font-size: 1.25rem;
+  }
+
+  @media screen and (min-width: 596px) {
+    --font-size: 1.5rem;
+  }
+
+  @media screen and (min-width: 702px) {
+    --font-size: 1.75rem;
+  }
+
+  margin: 4rem auto;
+
   width: fit-content;
 
   a {
     text-decoration: unset;
     color: inherit;
+  }
+
+  .topBar {
+    grid-column: 23 / span 13;
+    color: var(--green);
+  }
+
+  .page {
+    grid-column: 37 / span 3;
+    color: var(--yellow);
   }
 
   .bottomDivider {
@@ -36,21 +65,88 @@
     height: 100%;
   }
 
-  .over {
+  .debug {
     grid-row: 24;
-    grid-column: 13 / span 4;
+    grid-column: 13 / span 5;
     color: var(--green);
   }
 
   .instellingen {
     grid-row: 24;
-    grid-column: 19 / span 12;
+    grid-column: 20 / span 12;
     color: var(--yellow);
   }
 
   .bron {
     color: var(--cyan);
     grid-row: 24;
-    grid-column-start: 33;
+    grid-column-start: 34;
+  }
+
+  .header {
+    display: grid;
+    grid-template-columns: subgrid;
+    grid-template-rows: subgrid;
+    grid-column: 1 / -1;
+    grid-row: 2 / span 4;
+
+    .topWhiteN {
+      grid-column: 2 / span 3;
+    }
+
+    .topRedO {
+      color: var(--red);
+      grid-column: 6 / span 3;
+    }
+
+    .topWhiteS {
+      grid-column: 10 / span 3;
+    }
+
+    .topLine {
+      grid-column: 14 / span 27;
+      color: var(--green);
+    }
+
+    .middleN {
+      grid-column: 2 / span 3;
+    }
+
+    .middleO {
+      grid-column: 6 / span 3;
+      color: var(--red);
+    }
+
+    .middleS {
+      grid-column: 10 / span 3;
+    }
+
+    .middleTeleSnake {
+      grid-column: 15 / span 26;
+      color: var(--green);
+    }
+
+    .bottomN {
+      grid-column: 2 / span 3;
+    }
+
+    .bottomO {
+      grid-column: 6 / span 3;
+      color: var(--red);
+    }
+
+    .bottomS {
+      grid-column: 10 / span 3;
+    }
+
+    .bottomLine {
+      grid-column: 14 / span 27;
+      color: var(--green);
+    }
+
+    .finalLine {
+      grid-column: 1 / span 14;
+      color: var(--green);
+    }
   }
 }

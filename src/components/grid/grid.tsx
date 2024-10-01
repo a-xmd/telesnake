@@ -1,188 +1,42 @@
 import styles from './grid.module.css'
-import { useState } from 'react'
-import { Block } from '../block/block.tsx'
-
-interface TeletekstChar {
-  char: string
-  color?: 'red' | 'blue'
-  background?: 'green'
-}
 
 export const Grid = () => {
-  const [values] = useState<(TeletekstChar | null)[]>(() => [
-    ...[
-      {
-        char: '',
-      },
-      {
-        char: '',
-      },
-      {
-        char: '',
-      },
-      {
-        char: '',
-      },
-      {
-        char: '',
-      },
-      {
-        char: '',
-        color: 'red',
-      },
-      {
-        char: '',
-        color: 'red',
-      },
-      {
-        char: '',
-        color: 'red',
-      },
-      {
-        char: '',
-      },
-      {
-        char: '',
-      },
-      {
-        char: '',
-      },
-      {
-        char: '',
-      },
-      {
-        char: '',
-      },
-      ...Array(27).fill({ char: '', color: 'green' }),
-    ],
-    ...[
-      {
-        char: '',
-      },
-      {
-        char: '',
-      },
-      {
-        char: '',
-      },
-      {
-        char: '',
-      },
-      {
-        char: '',
-      },
-      {
-        char: '',
-        color: 'red',
-      },
-      {
-        char: '',
-      },
-      {
-        char: '',
-        color: 'red',
-      },
-      {
-        char: '',
-      },
-      {
-        char: '',
-      },
-      {
-        char: '',
-      },
-      {
-        char: '',
-      },
-      {
-        char: ' ',
-      },
-      {
-        char: ' ',
-      },
-      ...Array.from(Array.from('TELESNAKE').join('  ')).map((item) => ({
-        char: item,
-        color: 'green',
-      })),
-      {
-        char: ' ',
-      },
-    ],
-    ...[
-      {
-        char: '',
-      },
-      {
-        char: '',
-      },
-      {
-        char: '',
-      },
-      {
-        char: '',
-      },
-      {
-        char: '',
-      },
-      {
-        char: '',
-        color: 'red',
-      },
-      {
-        char: '',
-        color: 'red',
-      },
-      {
-        char: '',
-        color: 'red',
-      },
-      {
-        char: '',
-      },
-      {
-        char: '',
-      },
-      {
-        char: '',
-      },
-      {
-        char: '',
-      },
-      {
-        char: '',
-      },
-      {
-        char: '',
-        color: 'green',
-      },
-
-      ...Array(26).fill({ char: '', color: 'green' }),
-    ],
-    ...[...Array(14).fill({ char: '', color: 'green' })],
-  ])
-
   return (
     <div className={styles.grid}>
-      {values.map((value, index) => {
-        return (
-          <Block
-            key={`cell-${index}`}
-            color={value?.color}
-            background={value?.background}
-          >
-            {value?.char ?? '·'}
-          </Block>
-        )
-      })}
+      <div className={styles.topBar}>NOS TeleSnake</div>
+      <div className={styles.page}>000</div>
+      <Header />
       <div className={styles.bottomDivider}>
         <a href="#">© AXMD - P.T. SEPT. 2024</a>
       </div>
       <div className={styles.topscores}>topscores</div>
-      <div className={styles.over}>over</div>
+      <div className={styles.debug}>debug</div>
       <div className={styles.instellingen}>instellingen</div>
       <a className={styles.bron} href="https://github.com/a-xmd/telesnake">
         bron
       </a>
+    </div>
+  )
+}
+
+const Header = () => {
+  return (
+    <div className={styles.header}>
+      <div className={styles.topWhiteN}></div>
+      <div className={styles.topRedO}></div>
+      <div className={styles.topWhiteS}></div>
+      <div className={styles.topLine}>{Array(27).fill('').join('')}</div>
+      <div className={styles.middleN}> </div>
+      <div className={styles.middleO}> </div>
+      <div className={styles.middleS}></div>
+      <div
+        className={styles.middleTeleSnake}
+      >{`T  E  L  E  S  N  A  K  E`}</div>
+      <div className={styles.bottomN}> </div>
+      <div className={styles.bottomO}></div>
+      <div className={styles.bottomS}></div>
+      <div className={styles.bottomLine}>{Array(26).fill('').join('')}</div>
+      <div className={styles.finalLine}>{Array(14).fill('')}</div>
     </div>
   )
 }
