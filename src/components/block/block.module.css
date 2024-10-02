@@ -1,4 +1,12 @@
 .block {
+  --pos-x: 0;
+  --pos-y: 0;
+
+  grid-column: var(--pos-x);
+  grid-row: var(--pos-y);
+
+  outline: 1px dashed black;
+
   &.red {
     color: red;
   }
