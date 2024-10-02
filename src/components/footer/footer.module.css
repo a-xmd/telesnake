@@ -1,0 +1,40 @@
+.footer {
+  display: grid;
+  grid-template-columns: subgrid;
+  grid-template-rows: subgrid;
+
+  grid-column: 1 / -1;
+
+  grid-row: 23 / span 2;
+
+  .bottomDivider {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    background-color: var(--green);
+
+    color: var(--blue);
+    white-space: pre;
+    display: flex;
+    justify-content: center;
+  }
+
+  .topscores {
+    grid-column: 2 / span 9;
+    color: var(--red);
+  }
+
+  .debug {
+    grid-column: 13 / span 5;
+    color: var(--green);
+  }
+
+  .instellingen {
+    grid-column: 20 / span 12;
+    color: var(--yellow);
+  }
+
+  .bron {
+    color: var(--cyan);
+    grid-column-start: 34;
+  }
+}
