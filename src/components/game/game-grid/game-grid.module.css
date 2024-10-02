@@ -1,0 +1,28 @@
+.gameGrid {
+  --size-x: 32;
+  --size-y: 14;
+
+  display: grid;
+  position: relative;
+
+  grid-template-columns: subgrid;
+  grid-template-rows: subgrid;
+
+  grid-column: 5 / span 32;
+  grid-row: 7 / span 14;
+
+  .shadowGrid {
+    position: absolute;
+
+    display: grid;
+    grid-template-columns: repeat(var(--size-x), 1ch);
+    grid-template-rows: repeat(var(--size-y), var(--font-size));
+    height: 100%;
+    width: 100%;
+
+    > * {
+      outline: 1px dotted var(--green);
+      opacity: 0.5;
+    }
+  }
+}

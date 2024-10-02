@@ -1,26 +1,28 @@
-import { type FC, PropsWithChildren } from 'react'
+import { type FC, type PropsWithChildren, type CSSProperties } from 'react'
 import clsx from 'clsx'
 import styles from './block.module.css'
+import { Position } from '../../types.ts'
 
 interface BlockProps {
-  color?: 'red' | 'blue' | 'green'
-  background?: 'green'
+  position: Position
+}
+
+interface BlockCSSProperties extends CSSProperties {
+  '--pos-x': number
+  '--pos-y': number
 }
 
 export const Block: FC<PropsWithChildren<BlockProps>> = ({
   children,
-  color,
-  background,
+
+  position,
 }) => {
+  const style: BlockCSSProperties = {
+    '--pos-x': position.x,
+    '--pos-y': position.y,
+  }
   return (
-    <span
-      className={clsx(styles.block, {
-        [styles.red]: color === 'red',
-        [styles.blue]: color === 'blue',
-        [styles.green]: color === 'green',
-        [styles.bgGreen]: background === 'green',
-      })}
-    >
+    <span className={clsx(styles.block, styles.bgGreen)} style={style}>
       {children}
     </span>
   )
