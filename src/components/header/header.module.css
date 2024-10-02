@@ -1,0 +1,76 @@
+.header {
+  display: grid;
+  grid-template-columns: subgrid;
+  grid-template-rows: subgrid;
+  grid-column: 1 / -1;
+  grid-row: 1 / span 5;
+
+  .topBar {
+    grid-column: 23 / span 13;
+    color: var(--green);
+  }
+
+  .page {
+    grid-column: 37 / span 3;
+    color: var(--yellow);
+  }
+
+  .topWhiteN {
+    grid-column: 2 / span 3;
+  }
+
+  .topRedO {
+    color: var(--red);
+    grid-column: 6 / span 3;
+  }
+
+  .topWhiteS {
+    grid-column: 10 / span 3;
+  }
+
+  .topLine {
+    grid-column: 14 / span 27;
+    color: var(--green);
+  }
+
+  .middleN {
+    grid-column: 2 / span 3;
+  }
+
+  .middleO {
+    grid-column: 6 / span 3;
+    color: var(--red);
+  }
+
+  .middleS {
+    grid-column: 10 / span 3;
+  }
+
+  .middleTeleSnake {
+    grid-column: 15 / span 26;
+    color: var(--green);
+  }
+
+  .bottomN {
+    grid-column: 2 / span 3;
+  }
+
+  .bottomO {
+    grid-column: 6 / span 3;
+    color: var(--red);
+  }
+
+  .bottomS {
+    grid-column: 10 / span 3;
+  }
+
+  .bottomLine {
+    grid-column: 14 / span 27;
+    color: var(--green);
+  }
+
+  .finalLine {
+    grid-column: 1 / span 14;
+    color: var(--green);
+  }
+}
