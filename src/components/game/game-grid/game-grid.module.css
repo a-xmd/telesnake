@@ -13,6 +13,7 @@
 
   .shadowGrid {
     position: absolute;
+    pointer-events: none;
 
     display: grid;
     grid-template-columns: repeat(var(--size-x), 1ch);
