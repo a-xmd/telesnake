@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { Position } from '../../types.ts'
 import { useInterval } from '../../hooks/use-interval.ts'
 
@@ -9,8 +9,12 @@ enum Direction {
   RIGHT,
 }
 
+const isValidKey = (str: string): boolean => {
+  return ['ArrowDown', 'ArrowUp', 'ArrowRight', 'ArrowLeft'].includes(str)
+}
+
 export const useSnakeMovement = () => {
-  const [direction] = useState<Direction>(Direction.DOWN)
+  const directionRef = useRef<Direction>(Direction.DOWN)
   const [positions, setPositions] = useState<Position[]>(() => [
     { x: 12, y: 7 },
     { x: 13, y: 7 },
@@ -19,6 +23,32 @@ export const useSnakeMovement = () => {
     { x: 16, y: 7 },
   ])
 
+  useEffect(() => {
+    const keyboardHandler = (e: KeyboardEvent) => {
+      if (!isValidKey(e.key)) {
+        return
+      }
+      e.preventDefault()
+
+      switch (e.key) {
+        case 'ArrowDown':
+          directionRef.current = Direction.DOWN
+          break
+        case 'ArrowUp':
+          directionRef.current = Direction.UP
+          break
+        case 'ArrowLeft':
+          directionRef.current = Direction.LEFT
+          break
+        case 'ArrowRight':
+          directionRef.current = Direction.RIGHT
+          break
+      }
+    }
+
+    window.addEventListener('keydown', keyboardHandler)
+  }, [])
+
   useInterval(() => {
     const withoutLastBlock = positions.slice(1)
     const head = withoutLastBlock.at(-1)
@@ -26,25 +56,27 @@ export const useSnakeMovement = () => {
     if (!head) {
       return
     }
+    let newPositions: Position[] = []
 
-    switch (direction) {
+    switch (directionRef.current) {
       case Direction.RIGHT: {
-        setPositions([...withoutLastBlock, { x: head.x + 1, y: head.y }])
+        newPositions = [...withoutLastBlock, { x: head.x + 1, y: head.y }]
         break
       }
-      case Direction.LEFT: {
-        setPositions([...withoutLastBlock, { x: head.x - 1, y: head.y }])
+      case Direction.LEFT:
+        newPositions = [...withoutLastBlock, { x: head.x - 1, y: head.y }]
         break
-      }
+
       case Direction.UP: {
-        setPositions([...withoutLastBlock, { x: head.x, y: head.y - 1 }])
+        newPositions = [...withoutLastBlock, { x: head.x, y: head.y - 1 }]
         break
       }
       case Direction.DOWN: {
-        setPositions([...withoutLastBlock, { x: head.x, y: head.y + 1 }])
+        newPositions = [...withoutLastBlock, { x: head.x, y: head.y + 1 }]
         break
       }
     }
+    setPositions(newPositions)
   }, 1000)
 
   return { positions }
