@@ -1,30 +1,38 @@
 import styles from './game-grid.module.css'
-import { type CSSProperties, type FC, PropsWithChildren } from 'react'
+import { type CSSProperties } from 'react'
+import { Snake } from '../../snake/snake.tsx'
 
 const SHOW_GRID = true
-const SIZE_X = 32
-const SIZE_Y = 14
+const GRID_SIZE_X = 32
+const GRID_SIZE_Y = 14
+const HAS_OPEN_WALLS = true
 
 interface GridCSSProperties extends CSSProperties {
-  '--size-x': number
-  '--size-y': number
+  '--grid-size-x': number
+  '--grid-size-y': number
 }
 
-export const GameGrid: FC<PropsWithChildren> = ({ children }) => {
+export const GameGrid = () => {
   return (
     <div className={styles.gameGrid}>
-      {children}
+      <Snake
+        hasOpenWalls={HAS_OPEN_WALLS}
+        gridSize={{ width: GRID_SIZE_X, height: GRID_SIZE_Y }}
+      />
       {SHOW_GRID && <ShadowGrid />}
     </div>
   )
 }
 
 const ShadowGrid = () => {
-  const style: GridCSSProperties = { '--size-x': SIZE_X, '--size-y': SIZE_Y }
+  const style: GridCSSProperties = {
+    '--grid-size-x': GRID_SIZE_X,
+    '--grid-size-y': GRID_SIZE_Y,
+  }
 
   return (
     <div className={styles.shadowGrid} style={style}>
-      {Array(SIZE_X * SIZE_Y)
+      {Array(GRID_SIZE_X * GRID_SIZE_Y)
         .fill(' ')
         .map((cell, index) => (
           <div key={index}>{cell}</div>
