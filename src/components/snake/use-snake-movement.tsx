@@ -13,14 +13,30 @@ const isValidKey = (str: string): boolean => {
   return ['ArrowDown', 'ArrowUp', 'ArrowRight', 'ArrowLeft'].includes(str)
 }
 
-export const useSnakeMovement = () => {
+interface UseSnakeMovementProps {
+  hasOpenWalls: boolean
+  gridSize: {
+    width: number
+    height: number
+  }
+}
+
+type UseSnakeMovement = (props: UseSnakeMovementProps) => {
+  positions: Position[]
+}
+
+export const useSnakeMovement: UseSnakeMovement = ({
+  hasOpenWalls,
+  gridSize,
+}) => {
   const directionRef = useRef<Direction>(Direction.DOWN)
+
   const [positions, setPositions] = useState<Position[]>(() => [
-    { x: 12, y: 7 },
-    { x: 13, y: 7 },
-    { x: 14, y: 7 },
-    { x: 15, y: 7 },
-    { x: 16, y: 7 },
+    { x: 4, y: 7 },
+    { x: 4, y: 8 },
+    { x: 4, y: 9 },
+    { x: 4, y: 10 },
+    { x: 4, y: 11 },
   ])
 
   useEffect(() => {
@@ -30,28 +46,47 @@ export const useSnakeMovement = () => {
       }
       e.preventDefault()
 
+      const head = positions.at(-1)
+      const neck = positions.at(-2)
+
+      if (!head || !neck) {
+        return
+      }
+
       switch (e.key) {
         case 'ArrowDown':
-          directionRef.current = Direction.DOWN
+          if (head.y + 1 !== neck.y) {
+            directionRef.current = Direction.DOWN
+          }
           break
         case 'ArrowUp':
-          directionRef.current = Direction.UP
+          if (head.y - 1 !== neck.y) {
+            directionRef.current = Direction.UP
+          }
           break
         case 'ArrowLeft':
-          directionRef.current = Direction.LEFT
+          if (head.x - 1 !== neck.x) {
+            directionRef.current = Direction.LEFT
+          }
           break
         case 'ArrowRight':
-          directionRef.current = Direction.RIGHT
+          if (head.x + 1 !== neck.x) {
+            directionRef.current = Direction.RIGHT
+          }
           break
       }
     }
 
     window.addEventListener('keydown', keyboardHandler)
-  }, [])
+
+    return () => {
+      window.removeEventListener('keydown', keyboardHandler)
+    }
+  }, [positions])
 
   useInterval(() => {
     const withoutLastBlock = positions.slice(1)
-    const head = withoutLastBlock.at(-1)
+    const head = positions.at(-1)
 
     if (!head) {
       return
@@ -60,24 +95,37 @@ export const useSnakeMovement = () => {
 
     switch (directionRef.current) {
       case Direction.RIGHT: {
-        newPositions = [...withoutLastBlock, { x: head.x + 1, y: head.y }]
+        const nextPosition =
+          hasOpenWalls && head.x === gridSize.width ? 1 : head.x + 1
+
+        newPositions = [...withoutLastBlock, { x: nextPosition, y: head.y }]
         break
       }
-      case Direction.LEFT:
-        newPositions = [...withoutLastBlock, { x: head.x - 1, y: head.y }]
-        break
+      case Direction.LEFT: {
+        const nextPosition =
+          hasOpenWalls && head.x === 1 ? gridSize.width : head.x - 1
 
+        newPositions = [...withoutLastBlock, { x: nextPosition, y: head.y }]
+        break
+      }
       case Direction.UP: {
-        newPositions = [...withoutLastBlock, { x: head.x, y: head.y - 1 }]
+        const nextPosition =
+          hasOpenWalls && head.y === 1 ? gridSize.height : head.y - 1
+
+        newPositions = [...withoutLastBlock, { x: head.x, y: nextPosition }]
         break
       }
       case Direction.DOWN: {
-        newPositions = [...withoutLastBlock, { x: head.x, y: head.y + 1 }]
+        const nextPosition =
+          hasOpenWalls && head.y === gridSize.height ? 1 : head.y + 1
+
+        newPositions = [...withoutLastBlock, { x: head.x, y: nextPosition }]
         break
       }
     }
+
     setPositions(newPositions)
-  }, 1000)
+  }, 125)
 
   return { positions }
 }
