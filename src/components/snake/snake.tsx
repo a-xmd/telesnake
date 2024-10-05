@@ -4,6 +4,7 @@ import { FC } from 'react'
 import { useKeyboardHandler } from './use-keyboard-handler.ts'
 
 interface SnakeProps {
+  isPlaying: boolean
   hasOpenWalls: boolean
   gridSize: {
     width: number
@@ -11,8 +12,13 @@ interface SnakeProps {
   }
 }
 
-export const Snake: FC<SnakeProps> = ({ hasOpenWalls, gridSize }) => {
+export const Snake: FC<SnakeProps> = ({
+  isPlaying,
+  hasOpenWalls,
+  gridSize,
+}) => {
   const { positions, proposedDirectionRef } = useSnakeMovement({
+    isPlaying,
     hasOpenWalls,
     gridSize,
   })

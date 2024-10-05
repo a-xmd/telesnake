@@ -3,6 +3,7 @@ import { Direction, type Position } from '../../types.ts'
 import { useInterval } from '../../hooks/use-interval.ts'
 
 interface UseSnakeMovementProps {
+  isPlaying: boolean
   hasOpenWalls: boolean
   gridSize: {
     width: number
@@ -16,6 +17,7 @@ type UseSnakeMovement = (props: UseSnakeMovementProps) => {
 }
 
 export const useSnakeMovement: UseSnakeMovement = ({
+  isPlaying,
   hasOpenWalls,
   gridSize,
 }) => {
@@ -58,50 +60,53 @@ export const useSnakeMovement: UseSnakeMovement = ({
     [],
   )
 
-  useInterval(() => {
-    const withoutLastBlock = positions.slice(1)
-    const head = positions.at(-1)
-    const neck = positions.at(-2)
+  useInterval(
+    () => {
+      const withoutLastBlock = positions.slice(1)
+      const head = positions.at(-1)
+      const neck = positions.at(-2)
 
-    if (!head || !neck) {
-      return
-    }
-
-    if (currentDirectionRef.current !== proposedDirectionRef.current) {
-      changeDirection({ head, neck })
-    }
-
-    let newPositions: Position[]
-
-    switch (currentDirectionRef.current) {
-      case Direction.RIGHT: {
-        const nextPosition =
-          hasOpenWalls && head.x === gridSize.width ? 1 : head.x + 1
-        newPositions = [...withoutLastBlock, { x: nextPosition, y: head.y }]
-        break
+      if (!head || !neck) {
+        return
       }
-      case Direction.LEFT: {
-        const nextPosition =
-          hasOpenWalls && head.x === 1 ? gridSize.width : head.x - 1
-        newPositions = [...withoutLastBlock, { x: nextPosition, y: head.y }]
-        break
-      }
-      case Direction.UP: {
-        const nextPosition =
-          hasOpenWalls && head.y === 1 ? gridSize.height : head.y - 1
-        newPositions = [...withoutLastBlock, { x: head.x, y: nextPosition }]
-        break
-      }
-      case Direction.DOWN: {
-        const nextPosition =
-          hasOpenWalls && head.y === gridSize.height ? 1 : head.y + 1
-        newPositions = [...withoutLastBlock, { x: head.x, y: nextPosition }]
-        break
-      }
-    }
 
-    setPositions(newPositions)
-  }, 500)
+      if (currentDirectionRef.current !== proposedDirectionRef.current) {
+        changeDirection({ head, neck })
+      }
+
+      let newPositions: Position[]
+
+      switch (currentDirectionRef.current) {
+        case Direction.RIGHT: {
+          const nextPosition =
+            hasOpenWalls && head.x === gridSize.width ? 1 : head.x + 1
+          newPositions = [...withoutLastBlock, { x: nextPosition, y: head.y }]
+          break
+        }
+        case Direction.LEFT: {
+          const nextPosition =
+            hasOpenWalls && head.x === 1 ? gridSize.width : head.x - 1
+          newPositions = [...withoutLastBlock, { x: nextPosition, y: head.y }]
+          break
+        }
+        case Direction.UP: {
+          const nextPosition =
+            hasOpenWalls && head.y === 1 ? gridSize.height : head.y - 1
+          newPositions = [...withoutLastBlock, { x: head.x, y: nextPosition }]
+          break
+        }
+        case Direction.DOWN: {
+          const nextPosition =
+            hasOpenWalls && head.y === gridSize.height ? 1 : head.y + 1
+          newPositions = [...withoutLastBlock, { x: head.x, y: nextPosition }]
+          break
+        }
+      }
+
+      setPositions(newPositions)
+    },
+    isPlaying ? 175 : null,
+  )
 
   return { positions, proposedDirectionRef }
 }

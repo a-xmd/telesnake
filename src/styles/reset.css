@@ -43,3 +43,8 @@ button,
 [type='submit'] {
   -webkit-appearance: button;
 }
+
+button {
+  border: unset;
+  background-color: unset;
+}
