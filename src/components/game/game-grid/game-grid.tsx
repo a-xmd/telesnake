@@ -1,30 +1,42 @@
 import styles from './game-grid.module.css'
-import { type CSSProperties } from 'react'
-import { Snake } from '../../snake/snake.tsx'
-
-const SHOW_GRID = true
-const GRID_SIZE_X = 32
-const GRID_SIZE_Y = 14
-const HAS_OPEN_WALLS = true
+import { type CSSProperties, FC, PropsWithChildren } from 'react'
 
 interface GridCSSProperties extends CSSProperties {
   '--grid-size-x': number
   '--grid-size-y': number
 }
 
-export const GameGrid = () => {
+// @todo: replace these temp values
+interface GameGridProps {
+  SHOW_GRID: boolean
+  GRID_SIZE_X: number
+  GRID_SIZE_Y: number
+}
+
+export const GameGrid: FC<PropsWithChildren<GameGridProps>> = ({
+  children,
+  SHOW_GRID,
+  GRID_SIZE_X,
+  GRID_SIZE_Y,
+}) => {
   return (
     <div className={styles.gameGrid}>
-      <Snake
-        hasOpenWalls={HAS_OPEN_WALLS}
-        gridSize={{ width: GRID_SIZE_X, height: GRID_SIZE_Y }}
-      />
-      {SHOW_GRID && <ShadowGrid />}
+      {children}
+      {SHOW_GRID && (
+        <ShadowGrid GRID_SIZE_X={GRID_SIZE_X} GRID_SIZE_Y={GRID_SIZE_Y} />
+      )}
     </div>
   )
 }
 
-const ShadowGrid = () => {
+// @todo: split ShadowGrid into own component?
+
+interface ShadowGridProps {
+  GRID_SIZE_X: number
+  GRID_SIZE_Y: number
+}
+
+const ShadowGrid: FC<ShadowGridProps> = ({ GRID_SIZE_X, GRID_SIZE_Y }) => {
   const style: GridCSSProperties = {
     '--grid-size-x': GRID_SIZE_X,
     '--grid-size-y': GRID_SIZE_Y,

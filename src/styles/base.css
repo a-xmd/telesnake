@@ -6,6 +6,24 @@
   --red: #f00;
   --white: #fff;
   --yellow: #ff0;
+
+  --font-size: 0.75rem;
+
+  @media screen and (min-width: 400px) {
+    --font-size: 1rem;
+  }
+
+  @media screen and (min-width: 492px) {
+    --font-size: 1.25rem;
+  }
+
+  @media screen and (min-width: 596px) {
+    --font-size: 1.5rem;
+  }
+
+  @media screen and (min-width: 702px) {
+    --font-size: 1.75rem;
+  }
 }
 
 @font-face {

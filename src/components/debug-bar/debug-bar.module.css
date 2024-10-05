@@ -1,0 +1,36 @@
+.container {
+  background-color: var(--blue);
+  padding: 0.5rem 0;
+
+  .debugBar {
+    font-size: var(--font-size);
+    max-width: 40ch;
+    margin: 0 auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .leftSection,
+    .rightSection {
+      @media screen and (min-width: 492px) {
+        font-size: 1rem;
+      }
+    }
+
+    .leftSection {
+    }
+
+    .rightSection {
+      .pauseButton {
+        background-color: var(--white);
+        color: var(--blue);
+        padding: 0.5rem;
+
+        cursor: pointer;
+
+        min-width: calc(5ch + 1.25rem);
+      }
+    }
+  }
+}

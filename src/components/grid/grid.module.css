@@ -1,7 +1,4 @@
 .grid {
-  --font-size: 0.75rem;
-
-  font-family: AndroidVeraMono, monospace;
   display: grid;
   grid-template-columns: repeat(40, 1ch);
   grid-template-rows: repeat(24, var(--font-size));
@@ -9,22 +6,6 @@
   font-size: var(--font-size);
 
   white-space: pre;
-
-  @media screen and (min-width: 400px) {
-    --font-size: 1rem;
-  }
-
-  @media screen and (min-width: 492px) {
-    --font-size: 1.25rem;
-  }
-
-  @media screen and (min-width: 596px) {
-    --font-size: 1.5rem;
-  }
-
-  @media screen and (min-width: 702px) {
-    --font-size: 1.75rem;
-  }
 
   margin: 4rem auto;
 
