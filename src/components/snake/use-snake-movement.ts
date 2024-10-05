@@ -1,17 +1,6 @@
-import { useEffect, useState, useRef } from 'react'
-import { Position } from '../../types.ts'
+import { type MutableRefObject, useCallback, useRef, useState } from 'react'
+import { Direction, type Position } from '../../types.ts'
 import { useInterval } from '../../hooks/use-interval.ts'
-
-enum Direction {
-  UP,
-  DOWN,
-  LEFT,
-  RIGHT,
-}
-
-const isValidKey = (str: string): boolean => {
-  return ['ArrowDown', 'ArrowUp', 'ArrowRight', 'ArrowLeft'].includes(str)
-}
 
 interface UseSnakeMovementProps {
   hasOpenWalls: boolean
@@ -23,13 +12,15 @@ interface UseSnakeMovementProps {
 
 type UseSnakeMovement = (props: UseSnakeMovementProps) => {
   positions: Position[]
+  proposedDirectionRef: MutableRefObject<Direction>
 }
 
 export const useSnakeMovement: UseSnakeMovement = ({
   hasOpenWalls,
   gridSize,
 }) => {
-  const directionRef = useRef<Direction>(Direction.DOWN)
+  const currentDirectionRef = useRef<Direction>(Direction.DOWN)
+  const proposedDirectionRef = useRef<Direction>(Direction.DOWN)
 
   const [positions, setPositions] = useState<Position[]>(() => [
     { x: 4, y: 7 },
@@ -39,93 +30,78 @@ export const useSnakeMovement: UseSnakeMovement = ({
     { x: 4, y: 11 },
   ])
 
-  useEffect(() => {
-    const keyboardHandler = (e: KeyboardEvent) => {
-      if (!isValidKey(e.key)) {
-        return
-      }
-      e.preventDefault()
-
-      const head = positions.at(-1)
-      const neck = positions.at(-2)
-
-      if (!head || !neck) {
-        return
-      }
-
-      switch (e.key) {
-        case 'ArrowDown':
+  const changeDirection = useCallback(
+    ({ head, neck }: { head: Position; neck: Position }) => {
+      switch (proposedDirectionRef.current) {
+        case Direction.DOWN:
           if (head.y + 1 !== neck.y) {
-            directionRef.current = Direction.DOWN
+            currentDirectionRef.current = Direction.DOWN
           }
           break
-        case 'ArrowUp':
+        case Direction.UP:
           if (head.y - 1 !== neck.y) {
-            directionRef.current = Direction.UP
+            currentDirectionRef.current = Direction.UP
           }
           break
-        case 'ArrowLeft':
-          if (head.x - 1 !== neck.x) {
-            directionRef.current = Direction.LEFT
-          }
-          break
-        case 'ArrowRight':
+        case Direction.RIGHT:
           if (head.x + 1 !== neck.x) {
-            directionRef.current = Direction.RIGHT
+            currentDirectionRef.current = Direction.RIGHT
+          }
+          break
+        case Direction.LEFT:
+          if (head.x - 1 !== neck.x) {
+            currentDirectionRef.current = Direction.LEFT
           }
           break
       }
-    }
-
-    window.addEventListener('keydown', keyboardHandler)
-
-    return () => {
-      window.removeEventListener('keydown', keyboardHandler)
-    }
-  }, [positions])
+    },
+    [],
+  )
 
   useInterval(() => {
     const withoutLastBlock = positions.slice(1)
     const head = positions.at(-1)
+    const neck = positions.at(-2)
 
-    if (!head) {
+    if (!head || !neck) {
       return
     }
-    let newPositions: Position[] = []
 
-    switch (directionRef.current) {
+    if (currentDirectionRef.current !== proposedDirectionRef.current) {
+      changeDirection({ head, neck })
+    }
+
+    let newPositions: Position[]
+
+    switch (currentDirectionRef.current) {
       case Direction.RIGHT: {
         const nextPosition =
           hasOpenWalls && head.x === gridSize.width ? 1 : head.x + 1
-
         newPositions = [...withoutLastBlock, { x: nextPosition, y: head.y }]
         break
       }
       case Direction.LEFT: {
         const nextPosition =
           hasOpenWalls && head.x === 1 ? gridSize.width : head.x - 1
-
         newPositions = [...withoutLastBlock, { x: nextPosition, y: head.y }]
         break
       }
       case Direction.UP: {
         const nextPosition =
           hasOpenWalls && head.y === 1 ? gridSize.height : head.y - 1
-
         newPositions = [...withoutLastBlock, { x: head.x, y: nextPosition }]
         break
       }
       case Direction.DOWN: {
         const nextPosition =
           hasOpenWalls && head.y === gridSize.height ? 1 : head.y + 1
-
         newPositions = [...withoutLastBlock, { x: head.x, y: nextPosition }]
         break
       }
     }
 
     setPositions(newPositions)
-  }, 125)
+  }, 500)
 
-  return { positions }
+  return { positions, proposedDirectionRef }
 }
