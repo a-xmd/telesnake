@@ -1,31 +1,39 @@
 import styles from './game-grid.module.css'
-import { type CSSProperties, FC, PropsWithChildren } from 'react'
+import { type CSSProperties, FC, useState } from 'react'
+import { Snake } from '../../snake/snake.tsx'
+import { DebugBar } from '../../debug-bar/debug-bar.tsx'
 
 interface GridCSSProperties extends CSSProperties {
   '--grid-size-x': number
   '--grid-size-y': number
 }
 
-// @todo: replace these temp values
-interface GameGridProps {
-  SHOW_GRID: boolean
-  GRID_SIZE_X: number
-  GRID_SIZE_Y: number
-}
+// @todo: these are temp values. move to context or state or ref
+const SHOW_GRID = true
+const GRID_SIZE_X = 32
+const GRID_SIZE_Y = 14
+const HAS_OPEN_WALLS = true
 
-export const GameGrid: FC<PropsWithChildren<GameGridProps>> = ({
-  children,
-  SHOW_GRID,
-  GRID_SIZE_X,
-  GRID_SIZE_Y,
-}) => {
+export const GameGrid = () => {
+  const [isPlaying, setIsPlaying] = useState(true)
+
   return (
-    <div className={styles.gameGrid}>
-      {children}
-      {SHOW_GRID && (
-        <ShadowGrid GRID_SIZE_X={GRID_SIZE_X} GRID_SIZE_Y={GRID_SIZE_Y} />
-      )}
-    </div>
+    <>
+      <div className={styles.gameGrid}>
+        <Snake
+          hasOpenWalls={HAS_OPEN_WALLS}
+          isPlaying={isPlaying}
+          gridSize={{ width: GRID_SIZE_X, height: GRID_SIZE_Y }}
+        />
+        {SHOW_GRID && (
+          <ShadowGrid GRID_SIZE_X={GRID_SIZE_X} GRID_SIZE_Y={GRID_SIZE_Y} />
+        )}
+      </div>
+      <DebugBar
+        isPlaying={isPlaying}
+        togglePlayState={() => setIsPlaying(!isPlaying)}
+      />
+    </>
   )
 }
 

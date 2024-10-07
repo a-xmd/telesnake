@@ -1,5 +1,6 @@
 import styles from './debug-bar.module.css'
 import { type FC } from 'react'
+import { createPortal } from 'react-dom'
 
 interface DebugBarProps {
   isPlaying: boolean
@@ -7,7 +8,7 @@ interface DebugBarProps {
 }
 
 export const DebugBar: FC<DebugBarProps> = ({ isPlaying, togglePlayState }) => {
-  return (
+  return createPortal(
     <div className={styles.container}>
       <div className={styles.debugBar}>
         <div className={styles.leftSection}>wip: debug bar</div>
@@ -17,6 +18,7 @@ export const DebugBar: FC<DebugBarProps> = ({ isPlaying, togglePlayState }) => {
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.querySelector('[data-portal-id="debug"]')!,
   )
 }
