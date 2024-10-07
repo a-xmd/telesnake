@@ -21,8 +21,8 @@ export const useSnakeMovement: UseSnakeMovement = ({
   hasOpenWalls,
   gridSize,
 }) => {
-  const currentDirectionRef = useRef<Direction>(Direction.DOWN)
-  const proposedDirectionRef = useRef<Direction>(Direction.DOWN)
+  const currentDirectionRef = useRef<Direction>(Direction.RIGHT)
+  const proposedDirectionRef = useRef<Direction>(Direction.RIGHT)
 
   const [positions, setPositions] = useState<Position[]>(() => [
     { x: 4, y: 7 },
@@ -35,26 +35,47 @@ export const useSnakeMovement: UseSnakeMovement = ({
   const changeDirection = useCallback(
     ({ head, neck }: { head: Position; neck: Position }) => {
       switch (proposedDirectionRef.current) {
-        case Direction.DOWN:
-          if (head.y + 1 !== neck.y) {
+        case Direction.DOWN: {
+          const neckAndHeadAreSeparated =
+            head.y === gridSize.height && neck.y === 1
+
+          if (head.y + 1 !== neck.y && !neckAndHeadAreSeparated) {
             currentDirectionRef.current = Direction.DOWN
           }
           break
-        case Direction.UP:
-          if (head.y - 1 !== neck.y) {
+        }
+        case Direction.UP: {
+          const neckAndHeadAreSeparated =
+            neck.y === gridSize.height && head.y === 1
+
+          if (head.y - 1 !== neck.y && !neckAndHeadAreSeparated) {
             currentDirectionRef.current = Direction.UP
           }
           break
-        case Direction.RIGHT:
-          if (head.x + 1 !== neck.x) {
+        }
+        case Direction.RIGHT: {
+          const neckAndHeadAreSeparated =
+            neck.x === 1 && head.x === gridSize.width
+
+          if (head.x + 1 !== neck.x && !neckAndHeadAreSeparated) {
             currentDirectionRef.current = Direction.RIGHT
           }
           break
-        case Direction.LEFT:
-          if (head.x - 1 !== neck.x) {
+        }
+        case Direction.LEFT: {
+          const neckAndHeadAreSeparated =
+            head.x === 1 && neck.x === gridSize.width
+
+          if (head.x - 1 !== neck.x && !neckAndHeadAreSeparated) {
             currentDirectionRef.current = Direction.LEFT
           }
           break
+        }
+      }
+
+      // restore if proposed move was invalid
+      if (currentDirectionRef.current !== proposedDirectionRef.current) {
+        proposedDirectionRef.current = currentDirectionRef.current
       }
     },
     [],
@@ -105,7 +126,7 @@ export const useSnakeMovement: UseSnakeMovement = ({
 
       setPositions(newPositions)
     },
-    isPlaying ? 175 : null,
+    isPlaying ? 125 : null,
   )
 
   return { positions, proposedDirectionRef }

@@ -13,7 +13,7 @@ const GRID_SIZE_Y = 14
 const HAS_OPEN_WALLS = true
 
 export const Grid = () => {
-  const [isPlaying, setIsPlaying] = useState(false)
+  const [isPlaying, setIsPlaying] = useState(true)
 
   return (
     <>
