@@ -126,7 +126,7 @@ export const useSnakeMovement: UseSnakeMovement = ({
 
       setPositions(newPositions)
     },
-    isPlaying ? 125 : null,
+    isPlaying ? 250 : null,
   )
 
   return { positions, proposedDirectionRef }
