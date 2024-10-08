@@ -1,5 +1,5 @@
 import styles from './debug-bar.module.css'
-import { type FC } from 'react'
+import { type FC, useEffect } from 'react'
 import { createPortal } from 'react-dom'
 
 interface DebugBarProps {
@@ -8,6 +8,20 @@ interface DebugBarProps {
 }
 
 export const DebugBar: FC<DebugBarProps> = ({ isPlaying, togglePlayState }) => {
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key !== 'P' && e.key !== 'p') {
+        return
+      }
+      togglePlayState()
+    }
+
+    window.addEventListener('keydown', handler)
+
+    return () => {
+      window.removeEventListener('keydown', handler)
+    }
+  }, [togglePlayState])
   return createPortal(
     <div className={styles.container}>
       <div className={styles.debugBar}>

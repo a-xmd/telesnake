@@ -15,7 +15,7 @@ const GRID_SIZE_Y = 14
 const HAS_OPEN_WALLS = true
 
 export const GameGrid = () => {
-  const [isPlaying, setIsPlaying] = useState(true)
+  const [isPlaying, setIsPlaying] = useState(false)
 
   return (
     <>

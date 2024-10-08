@@ -1,0 +1,4 @@
+.score {
+  grid-column: 37 / span 3;
+  color: var(--yellow);
+}

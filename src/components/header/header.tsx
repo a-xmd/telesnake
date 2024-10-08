@@ -1,10 +1,11 @@
 import styles from './header.module.css'
+import { Score } from '../score/score.tsx'
 
 export const Header = () => {
   return (
     <div className={styles.header}>
       <div className={styles.topBar}>NOS TeleSnake</div>
-      <div className={styles.page}>000</div>
+      <Score />
       <div className={styles.topWhiteN}></div>
       <div className={styles.topRedO}></div>
       <div className={styles.topWhiteS}></div>

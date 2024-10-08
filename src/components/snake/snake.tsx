@@ -2,6 +2,7 @@ import { Block } from '../block/block.tsx'
 import { useSnakeMovement } from './use-snake-movement.ts'
 import { FC } from 'react'
 import { useKeyboardHandler } from './use-keyboard-handler.ts'
+import styles from './snake.module.css'
 
 interface SnakeProps {
   isPlaying: boolean
@@ -17,16 +18,24 @@ export const Snake: FC<SnakeProps> = ({
   hasOpenWalls,
   gridSize,
 }) => {
-  const { positions, proposedDirectionRef } = useSnakeMovement({
+  const { applePosition, positions, proposedDirectionRef } = useSnakeMovement({
     isPlaying,
     hasOpenWalls,
     gridSize,
   })
   useKeyboardHandler(proposedDirectionRef)
 
-  return positions.map((position) => (
-    <Block key={`${position.x}${position.y}`} position={position}>
-      {' '}
-    </Block>
-  ))
+  return (
+    <>
+      <Block
+        position={{ x: applePosition.x, y: applePosition.y }}
+        className={styles.dot}
+      />
+      {positions.map((position) => (
+        <Block key={`${position.x}${position.y}`} position={position}>
+          {' '}
+        </Block>
+      ))}
+    </>
+  )
 }
