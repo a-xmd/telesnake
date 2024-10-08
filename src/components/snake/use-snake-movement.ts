@@ -1,6 +1,14 @@
-import { type MutableRefObject, useCallback, useRef, useState } from 'react'
+import {
+  type MutableRefObject,
+  useCallback,
+  useContext,
+  useRef,
+  useState,
+} from 'react'
 import { Direction, type Position } from '../../types.ts'
 import { useInterval } from '../../hooks/use-interval.ts'
+import { findFreePosition, positionIsInSnake } from './functions.ts'
+import { GameContext } from '../../game-context.tsx'
 
 interface UseSnakeMovementProps {
   isPlaying: boolean
@@ -12,9 +20,19 @@ interface UseSnakeMovementProps {
 }
 
 type UseSnakeMovement = (props: UseSnakeMovementProps) => {
+  applePosition: Position
   positions: Position[]
   proposedDirectionRef: MutableRefObject<Direction>
 }
+
+// @todo: make random!
+const initSnakePosition: Position[] = [
+  { x: 12, y: 7 },
+  { x: 13, y: 7 },
+  { x: 14, y: 7 },
+  { x: 15, y: 7 },
+  { x: 16, y: 7 },
+]
 
 export const useSnakeMovement: UseSnakeMovement = ({
   isPlaying,
@@ -23,14 +41,17 @@ export const useSnakeMovement: UseSnakeMovement = ({
 }) => {
   const currentDirectionRef = useRef<Direction>(Direction.RIGHT)
   const proposedDirectionRef = useRef<Direction>(Direction.RIGHT)
+  const { score, setScore } = useContext(GameContext)
 
-  const [positions, setPositions] = useState<Position[]>(() => [
-    { x: 4, y: 7 },
-    { x: 4, y: 8 },
-    { x: 4, y: 9 },
-    { x: 4, y: 10 },
-    { x: 4, y: 11 },
-  ])
+  const [positions, setPositions] = useState<Position[]>(
+    () => initSnakePosition,
+  )
+  const [applePosition, setApplePosition] = useState(() =>
+    findFreePosition(positions, {
+      width: gridSize.width,
+      height: gridSize.height,
+    }),
+  )
 
   const changeDirection = useCallback(
     ({ head, neck }: { head: Position; neck: Position }) => {
@@ -124,10 +145,22 @@ export const useSnakeMovement: UseSnakeMovement = ({
         }
       }
 
+      if (positionIsInSnake(newPositions, applePosition)) {
+        setScore(score + 5)
+        setApplePosition(
+          findFreePosition(newPositions, {
+            width: gridSize.width,
+            height: gridSize.height,
+          }),
+        )
+        // restore
+        newPositions = [positions[0], ...newPositions]
+      }
+
       setPositions(newPositions)
     },
-    isPlaying ? 250 : null,
+    isPlaying ? 125 : null,
   )
 
-  return { positions, proposedDirectionRef }
+  return { positions, applePosition, proposedDirectionRef }
 }

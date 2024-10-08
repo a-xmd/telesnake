@@ -10,11 +10,6 @@
     color: var(--green);
   }
 
-  .page {
-    grid-column: 37 / span 3;
-    color: var(--yellow);
-  }
-
   .topWhiteN {
     grid-column: 2 / span 3;
   }
